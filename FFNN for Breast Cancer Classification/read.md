@@ -1,0 +1,5 @@
+This code is a feed-forward neural network which analyses MRI pictures made of breasts to classify whether the tumours in them are benign or malignant. 
+
+For this, we used the Breast Ultrasound Images Dataset, openly available dataset from Kaggle (https://www.kaggle.com/datasets/aryashah2k/breast-ultrasound-images-dataset?resource=download). The dataset contains more than 700 MRI scans with corresponding outline of the different tumours, which the model analyses and with throughout training and evaluation learns how to classify the tumour in the scans, using over 30 features, such as size, texture, smoothness. ​[8]​ 
+
+Feed-forward performs well only with pre-processed data, so in order to build up the model, we needed to implement data augmentation and normalization. These were later fed into the training model, and the evaluation part validated the accuracy. As a final step, we implement a small testing phase, where the model classifies a random scan from the dataset, which results in the following figure:  
