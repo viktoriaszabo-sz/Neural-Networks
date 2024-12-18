@@ -8,10 +8,12 @@ from PIL import Image
 from sklearn.utils.class_weight import compute_class_weight
 import numpy as np
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cpu')
 image_size = 128
 batch_size = 32 
 learning_rate = 0.0005  
+
+#torch.manual_seed(42)
 
 #--------------------------------------------------------------------------------------------------
 # Pre-processing and loading the data 
@@ -42,19 +44,19 @@ class FeedForward(nn.Module):
         self.model = torch.nn.Sequential(
             torch.nn.Linear(input_size, hidden_size), 
             torch.nn.BatchNorm1d(hidden_size),  
-            torch.nn.ELU(),
+            torch.nn.ReLU(), # or make is ELU 
 
             torch.nn.Linear(hidden_size, hidden_size // 2), 
             torch.nn.BatchNorm1d(hidden_size // 2),  
-            torch.nn.ELU(),
+            torch.nn.ReLU(),
             torch.nn.Dropout(0.2),  
 
             torch.nn.Linear(hidden_size // 2, hidden_size // 4), 
             torch.nn.BatchNorm1d(hidden_size // 4),  
-            torch.nn.ELU(),
+            torch.nn.ReLU(),
 
             torch.nn.Linear(hidden_size // 4, hidden_size // 8), 
-            torch.nn.ELU(),
+            torch.nn.ReLU(),
             torch.nn.Linear(hidden_size // 8, num_classes) 
         )
     def forward(self, x):
@@ -67,6 +69,7 @@ num_classes = 3
 model = FeedForward(input_size, hidden_size, num_classes).to(device)
 
 #--------------------------------------------------------------------------------------------------
+"""
 # Weight Initialization Function
 def weights_init(m):
     if isinstance(m, torch.nn.Linear):
@@ -78,6 +81,8 @@ def weights_init(m):
         nn.init.zeros_(m.bias)  # BatchNorm bias should be initialized to 0
 
 model.apply(weights_init)  # Apply the weight initialization to the model
+
+"""
 
 #--------------------------------------------------------------------------------------------------
 # Training 
